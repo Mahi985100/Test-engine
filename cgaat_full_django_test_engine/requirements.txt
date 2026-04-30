@@ -1,1 +1,4 @@
 Django==5.1.4
+Django
+gunicorn
+whitenoise
