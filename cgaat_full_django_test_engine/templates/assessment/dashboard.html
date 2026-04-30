@@ -1,0 +1,33 @@
+{% extends 'assessment/base.html' %}
+{% block content %}
+{% if user.is_staff %}
+<div class="topline" style="margin-bottom: 20px;">
+    <span>System Overview</span>
+</div>
+<div class="grid" style="margin-bottom: 30px;">
+    <div class="card">
+        <h3>Total Users</h3>
+        <p style="font-size: 24px; font-weight: bold; color: #2563eb;">{{ total_users }}</p>
+    </div>
+    <div class="card">
+        <h3>Total Questions</h3>
+        <p style="font-size: 24px; font-weight: bold; color: #2563eb;">{{ total_questions }}</p>
+    </div>
+    <div class="card">
+        <h3>Total Attempts</h3>
+        <p style="font-size: 24px; font-weight: bold; color: #2563eb;">{{ total_attempts }}</p>
+    </div>
+    <div class="card">
+        <h3>Completed Tests</h3>
+        <p style="font-size: 24px; font-weight: bold; color: #10b981;">{{ completed_tests }}</p>
+    </div>
+    <div class="card">
+        <h3>Average Score</h3>
+        <p style="font-size: 24px; font-weight: bold; color: #7c3aed;">{{ avg_score }}</p>
+    </div>
+</div>
+{% endif %}
+
+<h1>{% if user.is_staff %}Recent User Activity{% else %}My Test Attempts{% endif %}</h1>
+<div class="actions">{% if not user.is_staff %}<a class="btn" href="{% url 'smart_dashboard' %}">Start New Test</a>{% endif %}</div>
+<div class="table"><table><tr><th>Date</th><th>Status</th><th>Score</th><th>Personality</th><th>Report</th></tr>{% for a in attempts %}<tr><td>{{ a.started_at|date:"d M Y H:i" }}</td><td>{% if a.completed %}Completed{% else %}Pending{% endif %}</td><td>{{ a.total_score }}</td><td>{{ a.personality_type }}</td><td>{% if a.completed %}<a href="{% url 'report' a.id %}">View</a>{% else %}-{% endif %}</td></tr>{% empty %}<tr><td colspan="5">No attempts yet.</td></tr>{% endfor %}</table></div>{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'assessment/base.html' %}
+{% block content %}
+<div class="auth" style="max-width: 800px;">
+    <h2>{{ title }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div style="margin-bottom: 15px;">
+            <label style="background: transparent; border: none; padding: 0; margin-bottom: 5px; font-weight: bold;">Section:</label>
+            {{ form.section }}
+        </div>
+        <div class="grid">
+            <div style="margin-bottom: 15px;">
+                <label style="background: transparent; border: none; padding: 0; margin-bottom: 5px; font-weight: bold;">Skill Tag:</label>
+                {{ form.skill_tag }}
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="background: transparent; border: none; padding: 0; margin-bottom: 5px; font-weight: bold;">Order:</label>
+                {{ form.order }}
+            </div>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="background: transparent; border: none; padding: 0; margin-bottom: 5px; font-weight: bold;">Question Text:</label>
+            {{ form.text }}
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+            <div style="padding: 15px; border: 1px solid #e5e7eb; border-radius: 12px; background: #f8fafc;">
+                <strong>Option A</strong>
+                <div style="margin-top: 10px;">
+                    <label style="background: transparent; border: none; padding: 0; margin-bottom: 5px;">Text:</label>
+                    {{ form.option_a }}
+                </div>
+                <div style="margin-top: 10px;">
+                    <label style="background: transparent; border: none; padding: 0; margin-bottom: 5px;">Score:</label>
+                    {{ form.score_a }}
+                </div>
+            </div>
+
+            <div style="padding: 15px; border: 1px solid #e5e7eb; border-radius: 12px; background: #f8fafc;">
+                <strong>Option B</strong>
+                <div style="margin-top: 10px;">
+                    <label style="background: transparent; border: none; padding: 0; margin-bottom: 5px;">Text:</label>
+                    {{ form.option_b }}
+                </div>
+                <div style="margin-top: 10px;">
+                    <label style="background: transparent; border: none; padding: 0; margin-bottom: 5px;">Score:</label>
+                    {{ form.score_b }}
+                </div>
+            </div>
+
+            <div style="padding: 15px; border: 1px solid #e5e7eb; border-radius: 12px; background: #f8fafc;">
+                <strong>Option C</strong>
+                <div style="margin-top: 10px;">
+                    <label style="background: transparent; border: none; padding: 0; margin-bottom: 5px;">Text:</label>
+                    {{ form.option_c }}
+                </div>
+                <div style="margin-top: 10px;">
+                    <label style="background: transparent; border: none; padding: 0; margin-bottom: 5px;">Score:</label>
+                    {{ form.score_c }}
+                </div>
+            </div>
+
+            <div style="padding: 15px; border: 1px solid #e5e7eb; border-radius: 12px; background: #f8fafc;">
+                <strong>Option D</strong>
+                <div style="margin-top: 10px;">
+                    <label style="background: transparent; border: none; padding: 0; margin-bottom: 5px;">Text:</label>
+                    {{ form.option_d }}
+                </div>
+                <div style="margin-top: 10px;">
+                    <label style="background: transparent; border: none; padding: 0; margin-bottom: 5px;">Score:</label>
+                    {{ form.score_d }}
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 25px; display: flex; gap: 15px;">
+            <button type="submit" class="btn" style="flex: 1;">Save Question</button>
+            <a href="{% url 'question_list' %}" class="btn outline" style="flex: 1; text-align: center;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

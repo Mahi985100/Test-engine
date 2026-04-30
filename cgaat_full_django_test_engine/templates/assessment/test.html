@@ -1,0 +1,132 @@
+{% extends 'assessment/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
+    
+    <!-- Left Column: Test Question -->
+    <div class="test-card" style="flex: 1; min-width: 300px; margin: 0;">
+        <div class="topline">
+            <span>Question {{ index|add:"1" }} / {{ total }}</span>
+            <span id="timer">30:00</span>
+        </div>
+
+        <div class="progress">
+            <div style="width: {{ progress }}%;"></div>
+        </div>
+
+        <p class="badge">
+            {{ question.section.name }} | {{ question.skill_tag }}
+        </p>
+
+        <h2>{{ question.text }}</h2>
+
+        <form method="post" id="qform">
+            {% csrf_token %}
+            
+            <input type="hidden" name="is_marked" id="is_marked_input" value="{{ existing.is_marked|lower }}">
+
+            <label>
+                <input type="radio" name="answer" value="A" {% if existing.selected_option == 'A' %}checked{% endif %}>
+                {{ question.option_a }}
+            </label>
+
+            <label>
+                <input type="radio" name="answer" value="B" {% if existing.selected_option == 'B' %}checked{% endif %}>
+                {{ question.option_b }}
+            </label>
+
+            <label>
+                <input type="radio" name="answer" value="C" {% if existing.selected_option == 'C' %}checked{% endif %}>
+                {{ question.option_c }}
+            </label>
+
+            <label>
+                <input type="radio" name="answer" value="D" {% if existing.selected_option == 'D' %}checked{% endif %}>
+                {{ question.option_d }}
+            </label>
+
+            <div class="actions">
+                <button class="btn outline" name="previous" {% if index == 0 %}disabled{% endif %}>
+                    Previous
+                </button>
+                
+                <button type="button" class="btn outline" onclick="toggleMark()" id="markBtn" style="{% if existing.is_marked %}background: #fef08a!important; color: #1f2937!important;{% endif %}">
+                    {% if existing.is_marked %}Unmark{% else %}Mark for Review{% endif %}
+                </button>
+
+                {% if index|add:"1" == total %}
+                <button class="btn" name="submit">
+                    Submit Test
+                </button>
+                {% else %}
+                <button class="btn" name="next">
+                    Save & Next
+                </button>
+                {% endif %}
+            </div>
+        </form>
+
+        <p>Auto-save: your answer is saved when you click Next / Previous / Submit.</p>
+    </div>
+
+    <!-- Right Column: Navigation & Analytics -->
+    <div style="width: 320px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px;">
+        <div class="card" style="margin:0;">
+            <h3 style="margin-top:0;">Progress Analytics</h3>
+            <p><strong>Completed:</strong> {{ percent_completed }}%</p>
+            <p><strong>Questions Left:</strong> {{ questions_left }}</p>
+            <p><strong>Time Used:</strong> <span id="time-used-display">00:00</span></p>
+        </div>
+        
+        <div class="card" style="margin:0;">
+            <h3 style="margin-top:0;">Question Navigator</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; font-size: 0.85em; font-weight: 600;">
+                <div style="display:flex; align-items:center; gap:5px;"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#22c55e;"></span> Answered</div>
+                <div style="display:flex; align-items:center; gap:5px;"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#ef4444;"></span> Not Answered</div>
+                <div style="display:flex; align-items:center; gap:5px;"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#eab308;"></span> Marked</div>
+                <div style="display:flex; align-items:center; gap:5px;"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#f3f4f6; border:1px solid #d1d5db;"></span> Not Visited</div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;">
+                {% for q in q_nav %}
+                <a href="{% url 'test_question' attempt.id q.index %}" 
+                   style="display:flex; align-items:center; justify-content:center; height: 38px; border-radius: 8px; font-weight: bold; text-decoration: none; 
+                   border: 2px solid {% if q.is_current %}#2563eb{% else %}transparent{% endif %}; 
+                   {% if q.status == 'answered' %}background:#22c55e; color:#fff;
+                   {% elif q.status == 'not_answered' %}background:#ef4444; color:#fff;
+                   {% elif q.status == 'marked' %}background:#eab308; color:#fff;
+                   {% else %}background:#f3f4f6; color:#374151; border:1px solid #d1d5db;{% endif %}
+                   ">{{ q.label }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleMark() {
+    let inp = document.getElementById('is_marked_input');
+    let btn = document.getElementById('markBtn');
+    if (inp.value === 'true') {
+        inp.value = 'false';
+        btn.textContent = 'Mark for Review';
+        btn.style.background = 'white';
+        btn.style.color = '#2563eb'; // outline btn original color
+    } else {
+        inp.value = 'true';
+        btn.textContent = 'Unmark';
+        btn.style.background = '#fef08a';
+        btn.style.color = '#1f2937';
+    }
+}
+</script>
+
+<script>
+    const SECTION_NAME = "{{ question.section.name|escapejs }}";
+    const ATTEMPT_ID = "{{ attempt.id }}";
+</script>
+<script src="{% static 'js/timer.js' %}"></script>
+
+{% endblock %}

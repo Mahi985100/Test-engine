@@ -1,0 +1,41 @@
+{% extends 'assessment/base.html' %}
+{% block content %}
+<div class="topline" style="margin-bottom: 20px;">
+    <span>Question Management</span>
+    <a href="{% url 'question_create' %}" class="btn">Add New Question</a>
+</div>
+
+<div class="card">
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Section</th>
+                    <th>Question</th>
+                    <th>Skill Tag</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for q in questions %}
+                <tr>
+                    <td>{{ q.order }}</td>
+                    <td>{{ q.section.name }}</td>
+                    <td>{{ q.text|truncatechars:50 }}</td>
+                    <td><span class="badge">{{ q.skill_tag }}</span></td>
+                    <td>
+                        <a href="{% url 'question_update' q.id %}" style="margin-right: 10px;">Edit</a>
+                        <a href="{% url 'question_delete' q.id %}" style="color: #dc2626;">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 20px;">No questions found. Add one to get started.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

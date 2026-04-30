@@ -1,0 +1,48 @@
+{% extends 'assessment/base.html' %}
+
+{% block content %}
+<div class="test-card">
+    <h2>Smart Test Dashboard</h2>
+    <hr style="margin-bottom: 20px; border: 0; border-top: 1px solid #e5e7eb;">
+
+    <div class="grid">
+        <div style="background: #f8fafc; padding: 20px; border-radius: 16px; border: 1px solid #e5e7eb;">
+            <p style="margin:0; font-size: 0.9em; color: #64748b; font-weight: 700; text-transform: uppercase;">Total Questions</p>
+            <p style="margin:8px 0 0 0; font-size: 1.8em; font-weight: 900; color: #111827;">{{ total_questions }}</p>
+        </div>
+        <div style="background: #f8fafc; padding: 20px; border-radius: 16px; border: 1px solid #e5e7eb;">
+            <p style="margin:0; font-size: 0.9em; color: #64748b; font-weight: 700; text-transform: uppercase;">Total Time</p>
+            <p style="margin:8px 0 0 0; font-size: 1.8em; font-weight: 900; color: #111827;">{{ total_time }} Mins</p>
+        </div>
+        <div style="background: #f8fafc; padding: 20px; border-radius: 16px; border: 1px solid #e5e7eb;">
+            <p style="margin:0; font-size: 0.9em; color: #64748b; font-weight: 700; text-transform: uppercase;">Difficulty Level</p>
+            <p style="margin:8px 0 0 0; font-size: 1.8em; font-weight: 900; color: #111827;">{{ difficulty_level }}</p>
+        </div>
+        <div style="background: #f8fafc; padding: 20px; border-radius: 16px; border: 1px solid #e5e7eb;">
+            <p style="margin:0; font-size: 0.9em; color: #64748b; font-weight: 700; text-transform: uppercase;">Skills Covered</p>
+            <div style="margin-top: 5px; display: flex; flex-wrap: wrap; gap: 5px;">
+                {% for skill in skills %}
+                    <span style="background: #ddd; padding: 3px 8px; border-radius: 12px; font-size: 0.8em; color: #333;">{{ skill }}</span>
+                {% empty %}
+                    <span style="font-size: 1em; font-weight: bold; color: #333;">General</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div style="background: #eff6ff; padding: 20px; border-radius: 16px; margin-bottom: 24px; border: 1px solid #bfdbfe;">
+        <h3 style="margin-top:0; color: #1d4ed8;">Instructions</h3>
+        <ul style="margin-bottom:0; padding-left: 20px; line-height: 1.7; color: #1e3a8a;">
+            <li>Ensure you have a stable internet connection before starting.</li>
+            <li>Once started, each section has a strict time limit. Unanswered questions will be automatically skipped if time runs out.</li>
+            <li>Your progress is auto-saved as you navigate through the test.</li>
+            <li>Do not refresh the page or use the back button on your browser.</li>
+        </ul>
+    </div>
+
+    <div class="actions" style="text-align: center;">
+        <a class="btn" href="{% url 'start_test' %}" style="width: 100%; font-size: 1.1em; padding: 12px; display: block; box-sizing: border-box;">Begin Test</a>
+    </div>
+
+</div>
+{% endblock %}

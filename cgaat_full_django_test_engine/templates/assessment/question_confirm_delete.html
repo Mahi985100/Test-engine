@@ -1,0 +1,17 @@
+{% extends 'assessment/base.html' %}
+{% block content %}
+<div class="auth">
+    <h2 style="color: #dc2626;">Confirm Deletion</h2>
+    <p>Are you sure you want to delete the question:</p>
+    <blockquote style="padding: 15px; background: #fee2e2; border-left: 4px solid #dc2626; border-radius: 8px;">
+        "{{ question.text }}"
+    </blockquote>
+    <p>This action cannot be undone.</p>
+    
+    <form method="post" style="margin-top: 25px; display: flex; gap: 15px;">
+        {% csrf_token %}
+        <button type="submit" class="btn" style="background: #dc2626 !important; flex: 1;">Yes, Delete</button>
+        <a href="{% url 'question_list' %}" class="btn outline" style="flex: 1; text-align: center;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

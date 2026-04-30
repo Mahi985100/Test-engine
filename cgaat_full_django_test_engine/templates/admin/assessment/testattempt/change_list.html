@@ -1,0 +1,28 @@
+{% extends "admin/change_list.html" %}
+{% block content_title %}
+    {{ block.super }}
+    {% if summary_stats %}
+        <div style="display: flex; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; min-width: 150px;">
+                <h4 style="margin: 0; color: #64748b;">Total Users</h4>
+                <p style="margin: 5px 0 0; font-size: 20px; font-weight: bold; color: #2563eb;">{{ summary_stats.total_users }}</p>
+            </div>
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; min-width: 150px;">
+                <h4 style="margin: 0; color: #64748b;">Total Questions</h4>
+                <p style="margin: 5px 0 0; font-size: 20px; font-weight: bold; color: #2563eb;">{{ summary_stats.total_questions }}</p>
+            </div>
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; min-width: 150px;">
+                <h4 style="margin: 0; color: #64748b;">Total Attempts</h4>
+                <p style="margin: 5px 0 0; font-size: 20px; font-weight: bold; color: #2563eb;">{{ summary_stats.total_attempts }}</p>
+            </div>
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; min-width: 150px;">
+                <h4 style="margin: 0; color: #64748b;">Completed</h4>
+                <p style="margin: 5px 0 0; font-size: 20px; font-weight: bold; color: #10b981;">{{ summary_stats.completed_tests }}</p>
+            </div>
+            <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; min-width: 150px;">
+                <h4 style="margin: 0; color: #64748b;">Avg Score</h4>
+                <p style="margin: 5px 0 0; font-size: 20px; font-weight: bold; color: #7c3aed;">{{ summary_stats.avg_score|floatformat:2 }}</p>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

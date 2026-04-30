@@ -1,0 +1,82 @@
+{% extends 'assessment/base.html' %}
+{% block content %}
+<div class="topline" style="margin-bottom: 20px;">
+    <span>Test Attempts & Analytics</span>
+</div>
+
+<div class="grid" style="margin-bottom: 30px;">
+    <div class="card">
+        <h3>Total Users</h3>
+        <p style="font-size: 24px; font-weight: bold; color: #2563eb;">{{ total_users }}</p>
+    </div>
+    <div class="card">
+        <h3>Total Questions</h3>
+        <p style="font-size: 24px; font-weight: bold; color: #2563eb;">{{ total_questions }}</p>
+    </div>
+    <div class="card">
+        <h3>Total Attempts</h3>
+        <p style="font-size: 24px; font-weight: bold; color: #2563eb;">{{ total_attempts }}</p>
+    </div>
+    <div class="card">
+        <h3>Completed Tests</h3>
+        <p style="font-size: 24px; font-weight: bold; color: #10b981;">{{ completed_tests }}</p>
+    </div>
+    <div class="card">
+        <h3>Average Score</h3>
+        <p style="font-size: 24px; font-weight: bold; color: #7c3aed;">{{ avg_score }}</p>
+    </div>
+</div>
+
+<div class="card">
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Started At</th>
+                    <th>Submitted At</th>
+                    <th>Status</th>
+                    <th>Total Score</th>
+                    <th>Personality</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attempt in attempts %}
+                <tr>
+                    <td>{{ attempt.user.username }}</td>
+                    <td>{{ attempt.started_at|date:"M d, Y H:i" }}</td>
+                    <td>
+                        {% if attempt.submitted_at %}
+                            {{ attempt.submitted_at|date:"M d, Y H:i" }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if attempt.completed %}
+                            <span class="badge" style="background-color: #10b981; color: white;">Completed</span>
+                        {% else %}
+                            <span class="badge" style="background-color: #ef4444; color: white;">Pending</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ attempt.total_score }}</td>
+                    <td>{{ attempt.personality_type|default:"-" }}</td>
+                    <td>
+                        {% if attempt.completed %}
+                            <a href="{% url 'report' attempt.id %}">View Report</a>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 20px;">No test attempts found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
